@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
@@ -5,7 +7,8 @@ from django.conf.urls import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('src',
-	url(r'^$', 'core.views.homepage', name='homepage'),
+    url(r'^$', 'core.views.homepage', name='homepage'),
+    url(r'^inscricao/', include('src.subscriptions.urls', namespace='subscriptions')),
     # Examples:
     # url(r'^$', 'src.views.home', name='home'),
     # url(r'^src/', include('src.foo.urls')),
