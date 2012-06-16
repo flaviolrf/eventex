@@ -112,7 +112,7 @@ class SubscribeViewPostTest(TestCase):
 
 class SubscribeViewInvalidPostTest(TestCase):
     def setUp(self):
-        data = dict(name='Flávio França', cpf='000000000001',
+        data = dict(name='Flávio França', cpf='000000000000001',
                     email='henrique@bastos.net', phone='21-96186180')
         self.resp = self.client.post(reverse('subscriptions:subscribe'), data)
     

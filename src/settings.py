@@ -142,7 +142,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'src.core',
-    'src.subscriptions'
+    'src.subscriptions',
+    'django.contrib.localflavor'
 )
 
 # A sample logging configuration. The only tangible logging
