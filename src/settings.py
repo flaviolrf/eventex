@@ -4,7 +4,7 @@
 
 import os
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -81,7 +81,7 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = PROJECT_DIR.child('public')
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+STATIC_URL = 'http://s3.amazonaws.com/eventex/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (PROJECT_DIR.child('static'),

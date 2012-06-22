@@ -214,7 +214,7 @@ class SubscritpionFormTest(TestCase):
         u'Email e Phone são opcionais, mas ao menos 1 precisa ser informado.'
         form = self.make_and_validate_form(email='', phone='')
         self.assertDictEqual(form.errors,
-                             {'__all__': [u'Informe seu e-mail ou telefone.']})
+                             {'__all__': [u'Informe email ou telefone']})
 
     def make_and_validate_form(self, **kwargs):
         data = dict(name='Flávio França', email='flaviolrf@gmail.com', cpf='00000000000', phone='84-91520741')
