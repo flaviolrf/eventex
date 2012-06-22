@@ -14,8 +14,11 @@ from django.db import IntegrityError
 from .forms import SubscriptionForm
 from django.core import mail
 from django.conf import settings
-
+from mock import Mock
 from .models import Subscription
+from .admin import SubscriptionAdmin, Subscription, admin
+from django.contrib.auth.models import User
+from django.utils.translation import ungettext, ugettext as _
 
 
 class SubscriptionUrlTest(TestCase):
@@ -153,11 +156,69 @@ class SubscriptionModelUniqueTest(TestCase):
 		# Verifica se ocorre o erro de integridade ao persistir
 		self.assertRaises(IntegrityError, s.save)
 
-	def test_email_must_be_unique(self):
-		'Email deve ser único'
-		# Instancia a inscrição com email existente
-		s = Subscription(name='Flávio França', cpf='00000000000',
-						email='flaviolrf@gmail.com', phone='84-91520741')
+	#def test_email_must_be_unique(self):
+	#	'Email deve ser único'
+	#	# Instancia a inscrição com email existente
+	#	s = Subscription(name='Flávio França', cpf='00000000000',
+	#					email='flaviolrf@gmail.com', phone='84-91520741')
 		# Verifica se ocorre o erro de integridade ao persistir
-		self.assertRaises(IntegrityError, s.save)
+	#	self.assertRaises(IntegrityError, s.save)
 
+class CustomActionTest(TestCase):
+	def setUp(self):
+		Subscription.objects.create(
+			name='Flávio França',
+			cpf='79129250404',
+			email='flaviolrf@gmail.com',
+			phone='84-91520741'
+			)
+		self.modeladmin = SubscriptionAdmin(Subscription, admin.site)
+		self.modeladmin.mark_as_paid(Mock(), Subscription.objects.all())
+
+	def test_update_paid(self):
+		'Dados devem ser atualizados como pagos de acordo com o Queryset'
+		self.assertEqual(1, Subscription.objects.filter(paid=True).count())
+
+	#def test_update_unpaid(self):
+	#	'Dados devem ser atualizados como não pagos de acordo com o Queryset'
+	#	self.assertEqual(1, Subscription.objects.filter(paid=False).count())
+
+class ExportSubscriptionViewTest(TestCase):
+	def setUp(self):
+		User.objects.create_superuser('admin', 'admin@admin.com', 'admin')
+		assert self.client.login(username='admin', password='admin')
+		self.resp = self.client.get(reverse('admin:export_subscriptions'))
+
+	def test_get(self):
+		u'Sucesso ao acessar url de download do arquivo csv'
+		self.assertEqual(200, self.resp.status_code)
+
+	def test_content_type(self):
+		u'Content type deve ser text/csv'
+		self.assertEqual('text/csv', self.resp['Content-Type'])
+
+	def test_attachment(self):
+		u'Header indicando ao browser que a resposta é um arquivo a ser salvo'
+		self.assertTrue('attachment;' in self.resp['Content-Disposition'])
+
+class ExportSubscriptionsNotFound(TestCase):
+	def test_404(self):
+		u'Login é exigido para download do csv'
+		# Quando o usuário não está autenticado
+		# o admin responde 200 e renderiza o html de login
+		response = self.client.get(reverse('admin:export_subscriptions'))
+		self.assertTemplateUsed(response, 'admin/login.html')
+
+class SubscritpionFormTest(TestCase):
+    def test_must_inform_email_or_phone(self):
+        u'Email e Phone são opcionais, mas ao menos 1 precisa ser informado.'
+        form = self.make_and_validate_form(email='', phone='')
+        self.assertDictEqual(form.errors,
+                             {'__all__': [u'Informe seu e-mail ou telefone.']})
+
+    def make_and_validate_form(self, **kwargs):
+        data = dict(name='Flávio França', email='flaviolrf@gmail.com', cpf='00000000000', phone='84-91520741')
+        data.update(kwargs)
+        form = SubscriptionForm(data)
+        form.is_valid()
+        return form
