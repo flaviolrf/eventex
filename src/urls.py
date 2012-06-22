@@ -12,12 +12,6 @@ admin.autodiscover()
 urlpatterns = patterns('src',
     url(r'^$', 'core.views.homepage', name='homepage'),
     url(r'^inscricao/', include('src.subscriptions.urls', namespace='subscriptions')),
-
-    if settings.DEBUG is False:
-    	urlpatterns += patterns('',
-    		url(r'^static/(?P<path>.*)$', 'django.views.static.serve',
-			{'document_root': settings.STATIC_ROOT}),
-   	)
     # Examples:
     # url(r'^$', 'src.views.home', name='home'),
     # url(r'^src/', include('src.foo.urls')),
