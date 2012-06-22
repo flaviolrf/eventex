@@ -79,8 +79,10 @@ MEDIA_URL = '/media/'
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = PROJECT_DIR.child('public')
+#STATIC_ROOT = 'https://s3.amazonaws.com/eventex/static/'
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
+#STATIC_URL = '/static/'
 STATIC_URL = 'https://s3.amazonaws.com/eventex/static/'
 
 # Additional locations of static files

@@ -7,8 +7,6 @@ from django.conf import settings
 from django.contrib import admin
 admin.autodiscover()
 
-
-
 urlpatterns = patterns('src',
     url(r'^$', 'core.views.homepage', name='homepage'),
     url(r'^inscricao/', include('src.subscriptions.urls', namespace='subscriptions')),
