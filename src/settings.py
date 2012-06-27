@@ -83,6 +83,7 @@ STATIC_ROOT = PROJECT_DIR.child('public')
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 #STATIC_URL = '/static/'
+
 STATIC_URL = 'https://staticeventex.s3.amazonaws.com/static/'
 
 # Additional locations of static files
@@ -145,7 +146,8 @@ INSTALLED_APPS = (
     'src.subscriptions',
     # Apps de terceiros
     'django.contrib.localflavor',
-    'south'
+    'south',
+    'storages'
 )
 
 # A sample logging configuration. The only tangible logging
