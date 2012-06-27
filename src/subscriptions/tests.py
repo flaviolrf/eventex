@@ -20,7 +20,7 @@ from .admin import SubscriptionAdmin, Subscription, admin
 from django.contrib.auth.models import User
 from django.utils.translation import ungettext, ugettext as _
 
-
+#
 class SubscriptionUrlTest(TestCase):
 	def test_get_subscribe_page(self):
 		'Veririfca se existe rota para formulário de incrição'
